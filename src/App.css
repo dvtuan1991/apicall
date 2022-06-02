@@ -1,1 +1,64 @@
+.text-center {
+  text-align: center;
+}
 
+.d-none {
+  display: none;
+}
+
+.d-block {
+  display: block;
+}
+
+.relative {
+  position: relative;
+  width: 100%;
+  padding-bottom: 50px;
+  min-height: 700px;
+  height: 100vh;
+}
+
+.group-link {
+  padding-left: 16px;
+  padding-bottom: 50px;
+}
+
+.link-group {
+  font-size: 16px;
+  color: rgba(0, 0, 0, .9);
+  padding-bottom: 16px;
+  line-height: 2;
+}
+
+.ant-input[disabled] {
+  color: #1890ff;
+}
+
+.sidebar-menu {
+  border: none;
+  background-color: transparent;
+  height: 100%;
+  padding-left: 50px;
+  padding-top: 100px
+}
+
+.main-form {
+  padding-left: 16px;
+}
+
+.main-form .ant-space {
+  margin-bottom: 16px;
+}
+
+.sidebar-menu .ant-menu-item:active {
+  background-color: transparent ;
+}
+
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+  background-color: transparent;
+}
+
+.image-404 {
+  display: block;
+  margin: 0 auto;
+}

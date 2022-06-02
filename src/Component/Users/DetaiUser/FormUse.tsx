@@ -1,180 +1,349 @@
-import { Dispatch } from '@reduxjs/toolkit';
-import { Button, Form, Input } from 'antd'
-import React, { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
-import { IUser } from '../../../types/User';
 
-const FormUser: React.FC<{ user: IUser }> = ({ user }) => {
-  const navigate = useNavigate()
-  const [initFormValue, setInitFormValue] = useState<IUser>()
-  // const [isCreate, setIsCreate] = useState<boolean>(false)
-  const handleClickForm = (value: any) => {
-    console.log(value)
+import { Button, Col, Form, Input, Row, Space, Typography } from 'antd'
+import { ArrowLeftOutlined } from '@ant-design/icons';
+import React, { useEffect, useMemo, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import _ from "lodash";
+import { IUser } from '../../../types/User';
+import { useDispatch } from 'react-redux';
+import { addNewUser, updateUser } from '../../../store/UserSlice';
+import { defaultValidateMessages } from '../../../ultis/common';
+import { openNotification } from '../../../ultis/function';
+
+interface UserForm {
+  name: string;
+  username: string;
+  email: string;
+  phone: string;
+  street: string;
+  suite: string;
+  city: string;
+  zipcode: string;
+  lat: string;
+  lng: string;
+  website: string
+  companyName: string
+  catchPhrase: string;
+  bs: string
+}
+const {  Title } = Typography;
+
+const FormUser: React.FC<{ user?: IUser, isCreate?: boolean }> = ({ user, isCreate }) => {
+  const navigate = useNavigate();
+  const dispach = useDispatch();
+  const [form] = Form.useForm();
+  const [isEdit, setIsEdit] = useState<boolean>(false)
+
+  const handleclickEdit = () => {
+    !isCreate && setIsEdit(true);
   }
-  useEffect(() => {
-    if (!user) {
-      navigate('/')
-    } else {
-      const initValue = {
-        id: user.id,
+
+  const handleClickCancel = () => {
+    !isCreate && setIsEdit(false)
+    form.setFieldsValue(initialValues)
+  }
+  const handleClickForm = async (value: UserForm) => {
+    if (isCreate) {
+      const userCreate: IUser = {
+        id: Date.now(),
+        username: value.username,
+        name: value.name,
+        email: value.email,
+        phone: value.email,
+        address: {
+          street: value.street,
+          suite: value.suite,
+          city: value.city,
+          zipcode: value.zipcode,
+          geo: {
+            lat: value.lat,
+            lng: value.lng,
+          }
+        },
+
+        website: value.website,
+        company: {
+          name: value.companyName,
+          catchPhrase: value.catchPhrase,
+          bs: value.bs
+        }
+      };
+      const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+        method: 'POST',
+        body: JSON.stringify(userCreate),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      })
+      if (response.ok) {
+        dispach(addNewUser(userCreate))
+        openNotification('success', 'Creat New User Success')
+        navigate('/users')
+      } else {
+        alert('Some thing wrong, try again later');
+        navigate('/users')
+      }
+    } else if (user) {
+      const isEqual = _.isEqual(value, initialValues);
+      if (isEqual) {
+        openNotification('info', 'Creat New User Success');
+        navigate('/users')
+      } else {
+        const userUpdate: IUser = {
+          id: user.id,
+          username: value.username,
+          name: value.name,
+          email: value.email,
+          phone: value.email,
+          address: {
+            street: value.street,
+            suite: value.suite,
+            city: value.city,
+            zipcode: value.zipcode,
+            geo: {
+              lat: value.lat,
+              lng: value.lng,
+            }
+          },
+          website: value.website,
+          company: {
+            name: value.companyName,
+            catchPhrase: value.catchPhrase,
+            bs: value.bs
+          }
+        }
+        dispach(updateUser(userUpdate))
+        openNotification('success', 'Update User Success')
+        navigate('/users')
+      }
+    };
+  };
+
+  const initialValues = useMemo(() => {
+    if (user && !isCreate) {
+      return {
         name: user.name,
         username: user.username,
         email: user.email,
         phone: user.phone,
-        address: {
-          street: user.address.street,
-          suite: user.address.suite,
-          city: user.address.city,
-          zipcode: user.address.zipcode,
-          geo: {
-            lat: user.address.geo.lat,
-            lng: user.address.geo.lng,
-          }
-        },
+        street: user.address.street,
+        suite: user.address.suite,
+        city: user.address.city,
+        zipcode: user.address.zipcode,
+        lat: user.address.geo.lat,
+        lng: user.address.geo.lng,
         website: user.website,
-        company: {
-          name: user.company.name,
-          catchPhrase: user.company.catchPhrase,
-          bs: user.company.bs
-        },
-      }
-      setInitFormValue(initValue)
+        companyName: user.company.name,
+        catchPhrase: user.company.catchPhrase,
+        bs: user.company.bs
+      };
     }
-  }, [user])
+    return {
+      name: "",
+      username: "",
+      email: "",
+      phone: "",
+      street: "",
+      suite: "",
+      city: "",
+      zipcode: "",
+      lat: "",
+      lng: "",
+      website: "",
+      companyName: "",
+      catchPhrase: "",
+      bs: ""
+    };
+  }, [user, isCreate]);
+
+  useEffect(() => {
+    isCreate && setIsEdit(true)
+  }, [isCreate])
   return (
-    <>
-      {initFormValue &&
+    <div className='main-form'>
+      {isCreate
+        ? <Title level={3} className='text-center'>Create New User</Title>
+        : <Title level={3} className='text-center'>User Information</Title>
+      }
+      <Space >
+        <Button danger>
+          <Link to={'/users'}>
+            <ArrowLeftOutlined />
+          </Link>
+        </Button>
+        <Button onClick={handleclickEdit} style={{ display: isEdit ? 'none' : 'block' }} >
+          Edit
+        </Button>
+      </Space>
+      {initialValues &&
         <Form
           name="user"
-          labelCol={{ span: 4 }}
-          wrapperCol={{ span: 16 }}
-          initialValues={initFormValue}
+          form={form}
+          // labelCol={{ span: 4 }}
+          wrapperCol={{ span: 24 }}
+          initialValues={initialValues}
           onFinish={handleClickForm}
+          validateMessages={defaultValidateMessages}
         >
-          <Form.Item
-            name='id'
-            label='id'
-            
-          // rules={[{ required: true, message: 'Please input your name!', whitespace: true }]}
-          >
-            <Input bordered={false} disabled />
-          </Form.Item>
-          <Form.Item
-            name='name'
-            label='Name'
-            rules={[{ required: true, message: 'Please input your name!', whitespace: true }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name='username'
-            label='Username'
-            rules={[{ required: true, message: 'Please input your Username!', whitespace: true }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="email"
-            label="E-mail"
-            rules={[
-              {
-                type: 'email',
-                message: 'The input is not valid E-mail!',
-              },
-              {
-                required: true,
-                message: 'Please input your E-mail!',
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name='website'
-            label='Website'
-            rules={[{ required: true, message: 'Please input your Website!', whitespace: true }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item name='phone' label='Phone'>
-            <Input />
-          </Form.Item>
-          <Form.Item label='address'>
-            <Input.Group compact>
-              <Form.Item
-                name={['address', 'street']}
-                label='street'
-                rules={[{ required: true, message: 'street is required' }]}
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                name={['address', 'suite']}
-                label='suite'
-                rules={[{ required: true, message: 'suite is required' }]}
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                name={['address', 'city']}
-                label='city'
-                rules={[{ required: true, message: 'city is required' }]}
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                name={['address', 'zipcode']}
-                label='zipcode'
-                rules={[{ required: true, message: 'zipcode is required' }]}
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item label='geo'>
-                <Input.Group compact>
+          <Form.Item>
+            <Input.Group>
+              <Row>
+                <Col span={8}>
                   <Form.Item
-                    name={['address', 'geo', 'lat']}
-                    rules={[{ required: true, message: 'street is required' }]}>
-                    <Input />
+                    name='name'
+                    label='Name'
+                    rules={[{ required: true, max: 20 }]}
+                  >
+                    <Input disabled={!isEdit} bordered={isEdit} />
                   </Form.Item>
+                </Col>
+                <Col span={8}>
                   <Form.Item
-                    name={['address', 'street', 'lng']}
-                    rules={[{ required: true, message: 'street is required' }]}>
-                    <Input />
+                    name='username'
+                    label='Username'
+                    rules={[{ required: true, max: 15 }]}
+                  >
+                    <Input disabled={!isEdit} bordered={isEdit} />
                   </Form.Item>
-                </Input.Group>
-              </Form.Item>
+                </Col>
+                <Col span={8}>
+                  <Form.Item
+                    name="email"
+                    label="E-mail"
+                    rules={[{ required: true, type: 'email' }]}
+                  >
+                    <Input disabled={!isEdit} bordered={isEdit} />
+                  </Form.Item>
+                </Col>
+                <Col span={8}>
+                  <Form.Item
+                    name='website'
+                    label='Website'
+                    rules={[{ required: true, max: 20 }]}
+                  >
+                    <Input disabled={!isEdit} bordered={isEdit} />
+                  </Form.Item>
+                </Col>
+                <Col span={8}>
+                  <Form.Item
+                    name='phone'
+                    label='Phone'
+                    rules={[{ required: true, max: 50 }]}
+                  >
+                    <Input disabled={!isEdit} bordered={isEdit} />
+                  </Form.Item>
+                </Col>
+              </Row>
             </Input.Group>
           </Form.Item>
-          <Form.Item label='company'>
-            <Input.Group compact>
-              <Form.Item
-                name={['company', 'name']}
-                label='Company name'
-                rules={[{ required: true, message: 'name is required' }]}>
-                <Input />
-              </Form.Item>
-              <Form.Item
-                name={['company', 'catchPhrase']}
-                label='Company CatchPhrase'
-                rules={[{ required: true, message: 'catchPhrase is required' }]}>
-                <Input />
-              </Form.Item>
-              <Form.Item
-                name={['company', 'bs']}
-                label='Company bs'
-                rules={[{ required: true, message: 'bs is required' }]}>
-                <Input />
-              </Form.Item>
+          <Form.Item >
+            <h3 className='text-center'>Address </h3>
+            <Input.Group >
+              <Row >
+                <Col span={8}>
+
+                  <Form.Item
+                    name='street'
+                    label='Street'
+                    rules={[{ required: true, max: 40 }]}
+                  >
+                    <Input disabled={!isEdit} bordered={isEdit} />
+                  </Form.Item>
+                </Col>
+
+                <Col span={8}>
+                  <Form.Item
+                    name='suite'
+                    label='Suite'
+                    rules={[{ required: true, max: 20 }]}
+                  >
+                    <Input disabled={!isEdit} bordered={isEdit} />
+                  </Form.Item>
+                </Col>
+                <Col span={8}>
+                  <Form.Item
+                    name='city'
+                    label='City'
+                    rules={[{ required: true, max: 40 }]}
+                  >
+                    <Input disabled={!isEdit} bordered={isEdit} />
+                  </Form.Item>
+                </Col>
+                <Col span={8}>
+                  <Form.Item
+                    name='zipcode'
+                    label='Zipcode'
+                    rules={[{ required: true, max: 40 }]}
+                  >
+                    <Input disabled={!isEdit} bordered={isEdit} />
+                  </Form.Item>
+                </Col>
+                <Col span={8}>
+                  <Form.Item
+                    name='lat'
+                    label='Lat'
+                    rules={[{ required: true, max: 40 }]}
+                  >
+                    <Input disabled={!isEdit} bordered={isEdit} />
+                  </Form.Item>
+                </Col>
+                <Col span={8}>
+                  <Form.Item
+                    name='lng'
+                    label='Lng'
+                    rules={[{ required: true, max: 40 }]}
+                  >
+                    <Input disabled={!isEdit} bordered={isEdit} />
+                  </Form.Item>
+                </Col>
+              </Row>
             </Input.Group>
           </Form.Item>
-          <Form.Item label=" " colon={false}>
+          <Form.Item >
+            <h3 className='text-center'>Company</h3>
+            <Input.Group >
+              <Row>
+                <Col span={8}>
+                  <Form.Item
+                    name='companyName'
+                    label=' Company Name'
+                    rules={[{ required: true, max: 40 }]}
+                  >
+                    <Input disabled={!isEdit} bordered={isEdit} />
+                  </Form.Item>
+                </Col>
+                <Col span={8}>
+                  <Form.Item
+                    name='catchPhrase'
+                    label='CatchPhrase'
+                    rules={[{ required: true, max: 40 }]}
+                    >
+                    <Input disabled={!isEdit} bordered={isEdit} />
+                  </Form.Item>
+                </Col>
+                <Col span={8}>
+                  <Form.Item
+                    name='bs'
+                    label=' Bs'
+                    rules={[{ required: true, max: 40 }]}
+                    >
+                    <Input disabled={!isEdit} bordered={isEdit} />
+                  </Form.Item>
+                </Col>
+              </Row>
+            </Input.Group>
+          </Form.Item>
+          <Form.Item style={{ display: isEdit ? 'block' : 'none' }}>
             <Button type="primary" htmlType="submit">
               Submit
+            </Button>
+            <Button onClick={handleClickCancel} type='primary' danger style={{ marginLeft: 8 }}>
+              Cancel
             </Button>
           </Form.Item>
         </Form>
       }
-    </>
+    </div>
   )
 }
 

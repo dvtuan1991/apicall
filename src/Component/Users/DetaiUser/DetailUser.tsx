@@ -1,43 +1,50 @@
 import { Dispatch } from '@reduxjs/toolkit';
-import { Col, Row, Typography } from 'antd';
+import {  Typography } from 'antd';
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom'
+import {  useNavigate, useParams } from 'react-router-dom'
 import { RootState } from '../../../store';
+import { getPostsByUserId } from '../../../store/PostSlice';
 import { getUserDetail } from '../../../store/UserSlice';
-import { IUser } from '../../../types/User';
+
+import GruopLink from '../../GruopLink/GruopLink';
 import FormUser from './FormUse';
 
-const { Text, Title } = Typography;
+const {  Title } = Typography;
 
 const DetailUser = () => {
-  const { id } = useParams();
+  let { id } = useParams();
   const navigate = useNavigate()
-  const { error, userdetail, isLoading } = useSelector((state: RootState) => state.users)
+  const { error, userdetail, isLoading } = useSelector((state: RootState) => state.users);
+  const { postByUserId } = useSelector((state: RootState) => state.posts)
   const dispatch: Dispatch<any> = useDispatch();
-  console.log(userdetail);
 
   useEffect(() => {
-    id && dispatch(getUserDetail(id))
-  }, [dispatch, id])
+    console.log('getState')
+    if (id) {
+      dispatch(getUserDetail(id))
+      dispatch(getPostsByUserId(id))
+    }
+  }, [id, dispatch])
 
   useEffect(() => {
     if (error) {
-      navigate('/')
+      navigate('/404')
     }
-  }, [error])
-  return (
-    <div>
-      {/* {!isLoading && !error  && <FormUser user={userdetail} />} */}
-      <Title level={3}>User Information</Title>
-      <Row>
-        <Col>
-          <Text>{userdetail.name}</Text>
-        </Col>
-      </Row>
+  }, [error, navigate])
 
-    </div>
-    // <FormUser  />
+  return (
+    <>
+      {!isLoading && !error && Object.keys(userdetail).length &&
+        <>
+          <FormUser user={userdetail} />
+          <div className='group-link'>
+            <Title level={4}>{`${userdetail.username} has ${postByUserId.length} posts`}</Title>
+            {postByUserId.length > 0 && <GruopLink data={postByUserId} />}
+          </div>
+        </>
+      }
+    </>
   )
 }
 
