@@ -1,9 +1,9 @@
 import React from 'react'
-import Users from '../Component/Users/Users'
+import UserList from '../Component/Users'
 
 const Userspage = () => {
   return (
-    <Users />
+    <UserList />
   )
 }
 
