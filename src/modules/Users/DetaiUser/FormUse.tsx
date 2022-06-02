@@ -26,7 +26,7 @@ interface UserForm {
   catchPhrase: string;
   bs: string
 }
-const {  Title } = Typography;
+const { Title } = Typography;
 
 const FormUser: React.FC<{ user?: IUser, isCreate?: boolean }> = ({ user, isCreate }) => {
   const navigate = useNavigate();
@@ -80,7 +80,7 @@ const FormUser: React.FC<{ user?: IUser, isCreate?: boolean }> = ({ user, isCrea
         openNotification('success', 'Creat New User Success')
         navigate('/users')
       } else {
-        alert('Some thing wrong, try again later');
+        openNotification('error', 'Some thing wrong, try again later');
         navigate('/users')
       }
     } else if (user) {
@@ -178,161 +178,118 @@ const FormUser: React.FC<{ user?: IUser, isCreate?: boolean }> = ({ user, isCrea
       {initialValues &&
         <Form
           name="user"
+          layout='vertical'
           form={form}
-          // labelCol={{ span: 4 }}
           wrapperCol={{ span: 24 }}
           initialValues={initialValues}
           onFinish={handleClickForm}
           validateMessages={defaultValidateMessages}
         >
-          <Form.Item>
-            <Input.Group>
-              <Row>
-                <Col span={8}>
-                  <Form.Item
-                    name='name'
-                    label='Name'
-                    rules={[{ required: true, max: 20 }]}
-                  >
-                    <Input disabled={!isEdit} bordered={isEdit} />
-                  </Form.Item>
-                </Col>
-                <Col span={8}>
-                  <Form.Item
-                    name='username'
-                    label='Username'
-                    rules={[{ required: true, max: 15 }]}
-                  >
-                    <Input disabled={!isEdit} bordered={isEdit} />
-                  </Form.Item>
-                </Col>
-                <Col span={8}>
-                  <Form.Item
-                    name="email"
-                    label="E-mail"
-                    rules={[{ required: true, type: 'email' }]}
-                  >
-                    <Input disabled={!isEdit} bordered={isEdit} />
-                  </Form.Item>
-                </Col>
-                <Col span={8}>
-                  <Form.Item
-                    name='website'
-                    label='Website'
-                    rules={[{ required: true, max: 20 }]}
-                  >
-                    <Input disabled={!isEdit} bordered={isEdit} />
-                  </Form.Item>
-                </Col>
-                <Col span={8}>
-                  <Form.Item
-                    name='phone'
-                    label='Phone'
-                    rules={[{ required: true, max: 50 }]}
-                  >
-                    <Input disabled={!isEdit} bordered={isEdit} />
-                  </Form.Item>
-                </Col>
-              </Row>
-            </Input.Group>
-          </Form.Item>
-          <Form.Item >
-            <h3 className='text-center'>Address </h3>
-            <Input.Group >
-              <Row >
-                <Col span={8}>
+          <Row gutter={15} >
+            <Col span={12}>
+              <Form.Item
+                name='name'
+                label='Name'
+                rules={[{ required: true, max: 24 }]}
+              >
+                <Input disabled={!isEdit} bordered={isEdit} />
+              </Form.Item>
+              <Form.Item
+                name='username'
+                label='Username'
+                rules={[{ required: true, max: 15 }]}
+              >
+                <Input disabled={!isEdit} bordered={isEdit} />
+              </Form.Item>
+              <Form.Item
+                name="email"
+                label="E-mail"
+                rules={[{ required: true, type: 'email' }]}
+              >
+                <Input disabled={!isEdit} bordered={isEdit} />
+              </Form.Item>
+              <Form.Item
+                name='website'
+                label='Website'
+                rules={[{ required: true, max: 20 }]}
+              >
+                <Input disabled={!isEdit} bordered={isEdit} />
+              </Form.Item>
+              <Form.Item
+                name='phone'
+                label='Phone'
+                rules={[{ required: true, max: 50 }]}
+              >
+                <Input disabled={!isEdit} bordered={isEdit} />
+              </Form.Item>
+              <Form.Item
+                name='catchPhrase'
+                label='CatchPhrase'
+                rules={[{ required: true, max: 40 }]}
+              >
+                <Input disabled={!isEdit} bordered={isEdit} />
+              </Form.Item>
+              <Form.Item
+                name='bs'
+                label=' Bs'
+                rules={[{ required: true, max: 40 }]}
+              >
+                <Input disabled={!isEdit} bordered={isEdit} />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                name='street'
+                label='Street'
+                rules={[{ required: true, max: 40 }]}
+              >
+                <Input disabled={!isEdit} bordered={isEdit} />
+              </Form.Item>
+              <Form.Item
+                name='suite'
+                label='Suite'
+                rules={[{ required: true, max: 20 }]}
+              >
+                <Input disabled={!isEdit} bordered={isEdit} />
+              </Form.Item>
+              <Form.Item
+                name='city'
+                label='City'
+                rules={[{ required: true, max: 40 }]}
+              >
+                <Input disabled={!isEdit} bordered={isEdit} />
+              </Form.Item>
+              <Form.Item
+                name='zipcode'
+                label='Zipcode'
+                rules={[{ required: true, max: 40 }]}
+              >
+                <Input disabled={!isEdit} bordered={isEdit} />
+              </Form.Item>
+              <Form.Item
+                name='lat'
+                label='Lat'
+                rules={[{ required: true, max: 40 }]}
+              >
+                <Input disabled={!isEdit} bordered={isEdit} />
+              </Form.Item>
+              <Form.Item
+                name='lng'
+                label='Lng'
+                rules={[{ required: true, max: 40 }]}
+              >
+                <Input disabled={!isEdit} bordered={isEdit} />
+              </Form.Item>
+              <Form.Item
+                name='companyName'
+                label=' Company Name'
+                rules={[{ required: true, max: 40 }]}
+              >
+                <Input disabled={!isEdit} bordered={isEdit} />
+              </Form.Item>
 
-                  <Form.Item
-                    name='street'
-                    label='Street'
-                    rules={[{ required: true, max: 40 }]}
-                  >
-                    <Input disabled={!isEdit} bordered={isEdit} />
-                  </Form.Item>
-                </Col>
-
-                <Col span={8}>
-                  <Form.Item
-                    name='suite'
-                    label='Suite'
-                    rules={[{ required: true, max: 20 }]}
-                  >
-                    <Input disabled={!isEdit} bordered={isEdit} />
-                  </Form.Item>
-                </Col>
-                <Col span={8}>
-                  <Form.Item
-                    name='city'
-                    label='City'
-                    rules={[{ required: true, max: 40 }]}
-                  >
-                    <Input disabled={!isEdit} bordered={isEdit} />
-                  </Form.Item>
-                </Col>
-                <Col span={8}>
-                  <Form.Item
-                    name='zipcode'
-                    label='Zipcode'
-                    rules={[{ required: true, max: 40 }]}
-                  >
-                    <Input disabled={!isEdit} bordered={isEdit} />
-                  </Form.Item>
-                </Col>
-                <Col span={8}>
-                  <Form.Item
-                    name='lat'
-                    label='Lat'
-                    rules={[{ required: true, max: 40 }]}
-                  >
-                    <Input disabled={!isEdit} bordered={isEdit} />
-                  </Form.Item>
-                </Col>
-                <Col span={8}>
-                  <Form.Item
-                    name='lng'
-                    label='Lng'
-                    rules={[{ required: true, max: 40 }]}
-                  >
-                    <Input disabled={!isEdit} bordered={isEdit} />
-                  </Form.Item>
-                </Col>
-              </Row>
-            </Input.Group>
-          </Form.Item>
-          <Form.Item >
-            <h3 className='text-center'>Company</h3>
-            <Input.Group >
-              <Row>
-                <Col span={8}>
-                  <Form.Item
-                    name='companyName'
-                    label=' Company Name'
-                    rules={[{ required: true, max: 40 }]}
-                  >
-                    <Input disabled={!isEdit} bordered={isEdit} />
-                  </Form.Item>
-                </Col>
-                <Col span={8}>
-                  <Form.Item
-                    name='catchPhrase'
-                    label='CatchPhrase'
-                    rules={[{ required: true, max: 40 }]}
-                    >
-                    <Input disabled={!isEdit} bordered={isEdit} />
-                  </Form.Item>
-                </Col>
-                <Col span={8}>
-                  <Form.Item
-                    name='bs'
-                    label=' Bs'
-                    rules={[{ required: true, max: 40 }]}
-                    >
-                    <Input disabled={!isEdit} bordered={isEdit} />
-                  </Form.Item>
-                </Col>
-              </Row>
-            </Input.Group>
-          </Form.Item>
+            </Col>
+          </Row>
           <Form.Item style={{ display: isEdit ? 'block' : 'none' }}>
             <Button type="primary" htmlType="submit">
               Submit
@@ -341,9 +298,9 @@ const FormUser: React.FC<{ user?: IUser, isCreate?: boolean }> = ({ user, isCrea
               Cancel
             </Button>
           </Form.Item>
-        </Form>
+        </Form >
       }
-    </div>
+    </div >
   )
 }
 

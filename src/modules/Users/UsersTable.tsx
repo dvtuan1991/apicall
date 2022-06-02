@@ -4,7 +4,7 @@ import {  Table } from 'antd';
 import type { ColumnsType } from 'antd/lib/table';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { IUser } from '../../types/User';
-import ActionButton from '../Button/ActionButton';
+import ActionButton from '../../component/Button/ActionButton';
 import {  useNavigate } from "react-router-dom";
 import { Dispatch } from '@reduxjs/toolkit';
 import { deleteUser } from '../../store/UserSlice';
@@ -41,7 +41,7 @@ const UsersTable: React.FC<{ data: IUser[]}> = ({ data }) => {
       key: 'action',
       align: 'center' as 'center',
       render: (record: IUser) => (
-        <div>
+        <div >
           <ActionButton title={<EditOutlined />} id={record.id} action={handleClickEdit} type='primary' />
           <ActionButton title={<DeleteOutlined />} id={record.id} action={handleClickDelete} type='danger' />
         </div>

@@ -6,8 +6,7 @@ import {  useNavigate, useParams } from 'react-router-dom'
 import { RootState } from '../../../store';
 import { getPostsByUserId } from '../../../store/PostSlice';
 import { getUserDetail } from '../../../store/UserSlice';
-
-import GruopLink from '../../GruopLink/GruopLink';
+import GroupLink from '../../../component/GroupLink/GroupLink';
 import FormUser from './FormUse';
 
 const {  Title } = Typography;
@@ -40,7 +39,7 @@ const DetailUser = () => {
           <FormUser user={userdetail} />
           <div className='group-link'>
             <Title level={4}>{`${userdetail.username} has ${postByUserId.length} posts`}</Title>
-            {postByUserId.length > 0 && <GruopLink data={postByUserId} />}
+            {postByUserId.length > 0 && <GroupLink data={postByUserId} />}
           </div>
         </>
       }

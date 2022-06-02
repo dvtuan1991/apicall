@@ -4,11 +4,12 @@ import {  UpCircleOutlined, DownCircleOutlined } from '@ant-design/icons';
 import { IPost } from '../../types/Post';
 import LinkButton from '../Button/LinkButton';
 
+
 interface IGroupLink {
   data: IPost[]
 }
 
-const GruopLink: React.FC<IGroupLink> = ({ data }) => {
+const GroupLink: React.FC<IGroupLink> = ({ data }) => {
   const [isShow, SetIsShow] = useState(false)
   const handleClickShow = () => {
     SetIsShow(!isShow)
@@ -32,7 +33,7 @@ const GruopLink: React.FC<IGroupLink> = ({ data }) => {
           {
             data.map(object =>
               <Col span={12} key={object.id}>
-                <LinkButton pathName={`/posts/${object.id}`} text={object.title} classname='link-group' />
+                <LinkButton pathName={`/posts/${object.id}`} text={object.title} className='link-group' />
               </Col>
             )
           }
@@ -43,4 +44,4 @@ const GruopLink: React.FC<IGroupLink> = ({ data }) => {
   )
 }
 
-export default GruopLink
+export default GroupLink

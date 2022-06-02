@@ -1,10 +1,10 @@
 import React from 'react'
-import UserList from '../Component/Users'
+import UserList from '../modules/Users'
 
-const Userspage = () => {
+const UsersPage = () => {
   return (
     <UserList />
   )
 }
 
-export default Userspage
+export default UsersPage

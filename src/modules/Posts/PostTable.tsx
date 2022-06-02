@@ -4,7 +4,7 @@ import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom'
 import { IPost } from '../../types/Post'
 import { IUser } from '../../types/User'
-import ActionButton from '../Button/ActionButton'
+import ActionButton from '../../component/Button/ActionButton'
 import { useDispatch } from 'react-redux';
 import { Dispatch } from '@reduxjs/toolkit';
 import { Tooltip } from 'antd';

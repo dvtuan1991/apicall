@@ -10,9 +10,7 @@ const LayoutCustom: React.FC<{ children?: React.ReactNode }> = ({ children }) =>
   const dispatch: Dispatch<any> = useDispatch();
   const { userlist, isHas, isLoading } = useSelector((state: RootState) => state.users);
   const { postTotalList, isLoadingpost, isPostListHas } = useSelector((state: RootState) => state.posts);
-  console.log(isLoading);
-  console.log(isLoadingpost)
-  /* eslint-disable react-hooks/exhaustive-deps */
+  
   const menu = [
     {
       label: <Link to={'/'} >Home</Link>, key: 'home',
@@ -33,13 +31,11 @@ const LayoutCustom: React.FC<{ children?: React.ReactNode }> = ({ children }) =>
   }, [dispatch])
 
   useEffect(() => {
-    console.log(postTotalList)
     if (isHas && userlist.length > 0) {
       localStorage.setItem('userList', JSON.stringify(userlist))
     }
     if (postTotalList.length > 0) {
       localStorage.setItem('postList', JSON.stringify(postTotalList))
-      console.log(localStorage.getItem('userList'));
     }
   }, [isHas, isPostListHas])
   return (

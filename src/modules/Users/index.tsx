@@ -26,7 +26,7 @@ const UserList = () => {
   return (
     <Row justify='center'>
       {!isLoading &&
-        <Col span={20} >
+        <Col span={24} >
           <Button type='primary'>
             <Link to='/users/create'>
               Add new

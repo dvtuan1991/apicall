@@ -1,5 +1,5 @@
 import React from 'react'
-import PostsList from '../Component/Posts/PostsList'
+import PostsList from '../modules/Posts/PostsList'
 
 const Posts = () => {
   return (

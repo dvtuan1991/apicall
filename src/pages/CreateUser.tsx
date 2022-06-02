@@ -1,5 +1,5 @@
 import React from 'react'
-import FormUser from '../Component/Users/DetaiUser/FormUse'
+import FormUser from '../modules/Users/DetaiUser/FormUse'
 
 const CreateUser = () => {
   return (
