@@ -1,5 +1,5 @@
 
-import FormPost from '../Component/Posts/DetailPost/FormPost'
+import FormPost from '../modules/Posts/DetailPost/FormPost'
 
 const CreatePost = () => {
   return (
